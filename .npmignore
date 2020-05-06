@@ -1,0 +1,6 @@
+/.cache
+/dist
+/node_modules
+demo.html
+demo.js
+demo.css
