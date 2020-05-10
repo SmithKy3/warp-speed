@@ -74,7 +74,7 @@ function Star(canvas) {
   };
 }
 
-export function WarpSpeed(
+function WarpSpeed(
   numberOfStars = 300,
   starColor = '#c7e7ff',
   starVelocities = 3
@@ -163,3 +163,5 @@ export function WarpSpeed(
     render,
   };
 }
+
+exports.WarpSpeed = WarpSpeed;

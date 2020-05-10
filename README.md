@@ -33,12 +33,12 @@ On mounting of the canvas and on page resize, the canvas will automatically set 
 
 ## Demo
 
-To see a demo and have a wee play without the effort of writing muich/sny code of your own, go to the package repository (here you lazy git (get it... git?): https://github.com/SmithKy3/warp-speed)
+To see a demo and have a wee play without the effort of writing muich/any code of your own, go to the package repository (here you lazy git (get it... git?): https://github.com/SmithKy3/warp-speed)
 
 1. Clone / download it
 2. Open a CLI in the directory
 3. `npm i`
-4. `parcel demo.html`
+4. `npm run demo`
 5. Go to the URL printed to the console (should be localhost:1234)
 
 ## Why?
