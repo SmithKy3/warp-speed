@@ -93,8 +93,10 @@ function WarpSpeed(
   );
 
   function sizeCanvas() {
-    console.log(canvas);
-    const { clientWidth, clientHeight } = canvas;
+    const {
+      clientWidth,
+      clientHeight
+    } = canvas;
     canvas.width = clientWidth;
     canvas.height = clientHeight;
 
@@ -117,7 +119,10 @@ function WarpSpeed(
     ctx.fillStyle = color;
     ctx.strokeStyle = color;
     const drawFrame = () => {
-      const { width, height } = canvas;
+      const {
+        width,
+        height
+      } = canvas;
       ctx.setTransform(1, 0, 0, 1, 0, 0);
       ctx.clearRect(0, 0, width, height);
       ctx.translate(width / 2, height / 2);
