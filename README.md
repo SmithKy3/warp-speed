@@ -5,10 +5,10 @@ A small NPM package that can be used to grab a HTML5 canvas running a star wars 
 ## Example - setting this as a background for your entire page
 
 ```javascript
-import { WarpSpeed } from 'warp-speed';
+import { WarpSpeed } from 'warpspeed';
 
 function chewiePunchIt() {
-  const warpSpeed = new WarpSpeed();
+  const warpSpeed = WarpSpeed();
   const someContainer = document.querySelector('#someContainerId');
   warpSpeed.mountCanvasTo(someContainer);
   warpSpeed.render();
