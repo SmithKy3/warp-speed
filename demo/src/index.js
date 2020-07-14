@@ -1,8 +1,10 @@
-import { WarpSpeed } from './src/WarpSpeed';
+import {
+  getWarpSpeedController
+} from '../../dist/index';
 
 function demo() {
   // Create and assign WarpSpeed object:
-  const warpSpeed = WarpSpeed();
+  const warpSpeedController = getWarpSpeedController();
   /*
   Could have passed three parameters here, but they are optional.
   numberOfStars - Defaults to 300
@@ -12,14 +14,14 @@ function demo() {
 
   // Mount warpspeed canvas to DOM
   const canvasWrapper = document.querySelector('#center');
-  warpSpeed.mountCanvasTo(canvasWrapper);
+  warpSpeedController.mountCanvasTo(canvasWrapper);
   /*
   The canvas defaults to fill the element it is mounted to, but you can override this
   with your own styling if you fancy. It is created with an id of 'warpSpeedCanvas'. 
   */
 
   // Start drawing on said canvas
-  warpSpeed.render();
+  warpSpeedController.render();
 
   // The initial parameters can be set post-creation as well
   // warpSpeed.setNumberOfStars(1000);
