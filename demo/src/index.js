@@ -1,3 +1,4 @@
+import 'regenerator-runtime/runtime'; // Problem with Parcel's babel config
 import {
   getWarpSpeedController
 } from '../../dist/index';

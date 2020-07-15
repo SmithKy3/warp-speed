@@ -1,9 +1,10 @@
 {
   "name": "warpspeed",
-  "version": "2.0.0",
+  "version": "2.0.3",
   "description": "An animated HTML5 canvas with a warpspeed/star field effect. Good for backgrounds I guess.",
-  "main": "src/WarpSpeed.js",
-  "typings": "src/WarpSpeed.d.ts",
+  "main": "dist/index.js",
+  "exports": "dist/index.js",
+  "typings": "dist/index.d.ts",
   "keywords": [
     "Canvas",
     "Stars",
