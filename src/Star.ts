@@ -3,10 +3,9 @@ export interface Star {
   y: number;
   z: number;
   color: string;
+  radius: number;
   reset(): void;
 }
-
-const DEFAULT_STAR_RADIUS = 1;
 
 function getRandomNumber(min: number, max: number, round = false): number {
   const result = Math.random() * (max - min) + min;
@@ -14,30 +13,43 @@ function getRandomNumber(min: number, max: number, round = false): number {
   return round ? Math.round(result) : result;
 }
 
-function getStar(maxX: number, maxY: number): Star {
+function getStar(
+  maxX: number,
+  maxY: number,
+  color: string,
+  radius: number
+): Star {
   return {
     x: getRandomNumber(-maxX, maxX),
     y: getRandomNumber(-maxY, maxY),
     z: getRandomNumber(0, maxX),
-    color: `rgb(${getRandomNumber(0, 255)}, ${getRandomNumber(
-      0,
-      255
-    )}, ${getRandomNumber(0, 255)})`,
+    color,
+    radius,
     reset() {
       this.z = getRandomNumber(0, maxX);
-      this.color = `rgb(${getRandomNumber(0, 255)}, ${getRandomNumber(
-        0,
-        255
-      )}, ${getRandomNumber(0, 255)})`;
     },
   };
 }
 
-export function getStars(numberOfStars: number, maxX: number, maxY: number) {
+export function getStars(
+  numberOfStars: number,
+  maxX: number,
+  maxY: number,
+  starColor: string,
+  radius: number
+) {
   const stars = new Array<Star>();
 
   for (let i = 0; i++ < numberOfStars; ) {
-    stars.push(getStar(maxX, maxY));
+    const color =
+      starColor === 'rainbow'
+        ? `rgb(
+          ${getRandomNumber(0, 255, true)},
+          ${getRandomNumber(0, 255, true)},
+          ${getRandomNumber(0, 255, true)})`
+        : starColor;
+
+    stars.push(getStar(maxX, maxY, color, radius));
   }
 
   return stars;
@@ -45,8 +57,7 @@ export function getStars(numberOfStars: number, maxX: number, maxY: number) {
 
 export async function drawStars(
   stars: Star[],
-  context: CanvasRenderingContext2D,
-  starColor: string
+  context: CanvasRenderingContext2D
 ): Promise<void> {
   const { width, height } = context.canvas;
   const halfWidth = width * 0.5;
@@ -61,9 +72,9 @@ export async function drawStars(
     const Y = Math.round(star.y / depthCoefficient);
 
     context.beginPath();
-    context.arc(X, Y, DEFAULT_STAR_RADIUS, 0, 2 * Math.PI);
     context.fillStyle = star.color;
-    context.fill();
+    context.arc(X, Y, star.radius, 0, 2 * Math.PI);
     context.closePath();
+    context.fill();
   }
 }

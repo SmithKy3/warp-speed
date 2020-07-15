@@ -6,28 +6,43 @@ export interface WarpSpeedController {
   dismountCanvas(): void;
   setNumberOfStars(num: number): void;
   setStarColor(color: string): void;
+  setStarRadii(r: number): void;
   setStarVelocities(num: number): void;
   render(): void;
 }
 
 export function getWarpSpeedController(
-  numberOfStars = 5000,
-  starsColor = '#c7e7ff',
-  starsVelocity = 2
+  numberOfStars = 2000,
+  starsColor = 'rainbow',
+  starsRadius = 1.5,
+  starsVelocity = 5
 ): WarpSpeedController {
   let starQuantity = numberOfStars;
   let color = starsColor;
+  let radius = starsRadius;
   let velocity = starsVelocity;
   let animationFrameId: number;
   const stars = new Array<Star>();
   const canvas = getCanvas();
 
+  // Empty stars array when color/radius need to be changed on all
+  function clearStars(): void {
+    stars.length = 0;
+  }
+
+  // Generate some number of stars, or remove some number from the array if need be. Relies on starQuantity property
   function updateNumberOfStars(): void {
     if (starQuantity > stars.length) {
       const { clientWidth, clientHeight } = canvas;
       const starsRequired = starQuantity - stars.length;
       stars.push(
-        ...getStars(starsRequired, clientWidth * 0.5, clientHeight * 0.5)
+        ...getStars(
+          starsRequired,
+          clientWidth * 0.5,
+          clientHeight * 0.5,
+          color,
+          radius
+        )
       );
     } else if (starQuantity < stars.length) {
       const starsToRemove = stars.length - starQuantity;
@@ -35,6 +50,7 @@ export function getWarpSpeedController(
     }
   }
 
+  // Used to decline Z position of stars to give the perspective feel
   async function updateStarPositions(): Promise<void> {
     for (const star of stars) {
       if (star.z <= velocity) {
@@ -46,6 +62,7 @@ export function getWarpSpeedController(
     }
   }
 
+  // Recursive animation drawing, uses async to try and avoid requesting a new frame while we are till computing and getting hang/FPS drop
   function draw(): void {
     const context = canvas.getContext('2d');
 
@@ -53,7 +70,7 @@ export function getWarpSpeedController(
       throw new Error(`Couldn't get context of warpSpeed canvas`);
     }
 
-    drawStars(stars, context, color)
+    drawStars(stars, context)
       .then(updateStarPositions)
       .then(() => (animationFrameId = window.requestAnimationFrame(draw)));
   }
@@ -81,8 +98,16 @@ export function getWarpSpeedController(
       updateNumberOfStars();
     },
 
-    setStarColor(color: string): void {
-      starsColor = color;
+    setStarColor(newColour: string): void {
+      color = newColour;
+      clearStars();
+      updateNumberOfStars();
+    },
+
+    setStarRadii(r: number): void {
+      radius = r;
+      clearStars();
+      updateNumberOfStars();
     },
 
     setStarVelocities(num: number): void {

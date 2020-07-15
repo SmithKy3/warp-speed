@@ -1,6 +1,6 @@
 {
   "name": "warpspeed",
-  "version": "1.1.2",
+  "version": "2.0.0",
   "description": "An animated HTML5 canvas with a warpspeed/star field effect. Good for backgrounds I guess.",
   "main": "src/WarpSpeed.js",
   "typings": "src/WarpSpeed.d.ts",
@@ -24,6 +24,7 @@
     "typescript": "^3.9.6"
   },
   "scripts": {
-    "demo": "parcel ./demo/src/index.html -d ./demo/build"
+    "demo": "tsc && parcel ./demo/src/index.html -d ./demo/build",
+    "deploy": "tsc && npm publish"
   }
 }
