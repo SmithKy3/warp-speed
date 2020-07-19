@@ -17,7 +17,7 @@ export function getWarpSpeedController(
   numberOfStars = 750,
   starsColor = 'rainbow',
   starsRadius = 3,
-  starsVelocity = 5
+  starsVelocity = 3
 ): WarpSpeedController {
   let starQuantity = numberOfStars;
   let color = starsColor;

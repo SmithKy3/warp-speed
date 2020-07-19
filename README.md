@@ -16,17 +16,17 @@ function chewiePunchIt() {
   // You can then...
 
   // Change the number of stars being rendered:
-  warpSpeedController.setNumberOfStars(3000); // Default is 2000
+  warpSpeedController.setNumberOfStars(2000); // Default is 7500
 
   // Change the color of the stars:
   warpSpeedController.setStarColor('rgb(255, 0, 0)'); // Default and my favourite is 'rainbow'
   // Note: Colour must be a valid CSS colour string, 'rainbow' is the only exception here
 
   // Change the size of the stars:
-  warpSpeedController.setStarRadii(5); // Default is 1.5
+  warpSpeedController.setStarRadii(5); // Default is 3
 
   // Change the speed of the stars:
-  warpSpeedController.setStarVelocities(50); // Default is 5 (50 makes me feel a bit motion sick)
+  warpSpeedController.setStarVelocities(50); // Default is 3 (50 makes me feel a bit motion sick)
 
   /* All of the above parameters can be passed as parameters when calling getWarpSpeedController but are optional */
 
