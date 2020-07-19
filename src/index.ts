@@ -11,17 +11,22 @@ export interface WarpSpeedController {
   render(): void;
 }
 
+const TIME_PER_FRAME = 1000 / 45;
+
 export function getWarpSpeedController(
-  numberOfStars = 2000,
+  numberOfStars = 750,
   starsColor = 'rainbow',
-  starsRadius = 1.5,
+  starsRadius = 3,
   starsVelocity = 5
 ): WarpSpeedController {
   let starQuantity = numberOfStars;
   let color = starsColor;
   let radius = starsRadius;
   let velocity = starsVelocity;
-  let animationFrameId: number;
+
+  let frameID: number; // string returned by requestAnimationFrame, used for cancelling frame if we want to stop the animation
+  let previousTimeStamp: number; // time stamp at time of last frame, in ms
+
   const stars = new Array<Star>();
   const canvas = getCanvas();
 
@@ -38,8 +43,8 @@ export function getWarpSpeedController(
       stars.push(
         ...getStars(
           starsRequired,
-          clientWidth * 0.5,
-          clientHeight * 0.5,
+          clientWidth * 0.25,
+          clientHeight * 0.25,
           color,
           radius
         )
@@ -51,28 +56,45 @@ export function getWarpSpeedController(
   }
 
   // Used to decline Z position of stars to give the perspective feel
+  // does so using real time measurements to ensure a consistent frame rate feel
+  // (emphasis on feel because real frame rate is basically as fast as the client machine can fir off an animationFrame event)
   async function updateStarPositions(): Promise<void> {
+    const currentTimeStamp = performance.now();
+    const timeDelta = currentTimeStamp - previousTimeStamp;
+    const distanceDelta = velocity * (timeDelta / TIME_PER_FRAME);
+
     for (const star of stars) {
       if (star.z <= velocity) {
         star.reset();
         continue;
       }
 
-      star.z -= velocity;
+      star.z -= distanceDelta;
     }
+
+    previousTimeStamp = currentTimeStamp;
   }
 
   // Recursive animation drawing, uses async to try and avoid requesting a new frame while we are till computing and getting hang/FPS drop
-  function draw(): void {
+  async function draw(): Promise<void> {
     const context = canvas.getContext('2d');
 
     if (!context) {
       throw new Error(`Couldn't get context of warpSpeed canvas`);
     }
 
-    drawStars(stars, context)
+    await drawStars(stars, context)
       .then(updateStarPositions)
-      .then(() => (animationFrameId = window.requestAnimationFrame(draw)));
+      .then(() => (frameID = window.requestAnimationFrame(draw)));
+  }
+
+  function onResize() {
+    window.cancelAnimationFrame(frameID);
+    clearStars();
+    sizeCanvas(canvas);
+    updateNumberOfStars();
+    previousTimeStamp = performance.now();
+    frameID = window.requestAnimationFrame(draw);
   }
 
   return {
@@ -90,7 +112,9 @@ export function getWarpSpeedController(
         return;
       }
 
+      window.cancelAnimationFrame(frameID);
       canvas.parentNode.removeChild(canvas);
+      window.removeEventListener('resize', onResize);
     },
 
     setNumberOfStars(num: number): void {
@@ -115,7 +139,10 @@ export function getWarpSpeedController(
     },
 
     render(): void {
-      window.requestAnimationFrame(draw);
+      previousTimeStamp = performance.now();
+      frameID = window.requestAnimationFrame(draw);
+
+      window.addEventListener('resize', onResize);
     },
   };
 }
