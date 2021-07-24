@@ -1,17 +1,17 @@
 {
   "name": "warpspeed",
-  "version": "2.0.5",
+  "version": "2.0.6",
   "description": "An animated HTML5 canvas with a warpspeed/star field effect. Good for backgrounds I guess.",
-  "main": "dist/index.js",
-  "exports": "dist/index.js",
-  "typings": "dist/index.d.ts",
+  "main": "./dist/index.js",
+  "exports": "./dist/index.js",
+  "typings": "./dist/index.d.ts",
   "keywords": [
     "Canvas",
     "Stars",
     "Animated",
     "Warp"
   ],
-  "author": "smithky3 <kye@kyesmith.me>",
+  "author": "smithky3",
   "bugs": {
     "url": "https://github.com/SmithKy3/warp-speed/issues"
   },
@@ -21,11 +21,13 @@
   },
   "license": "ISC",
   "devDependencies": {
-    "parcel": "^1.12.4",
+    "http-server": "^0.12.3",
+    "rollup": "^2.53.3",
+    "rollup-plugin-typescript2": "^0.30.0",
     "typescript": "^3.9.6"
   },
   "scripts": {
-    "demo": "tsc && parcel ./demo/src/index.html -d ./demo/build",
-    "deploy": "tsc && npm publish"
+    "build": "rollup -c",
+    "deploy": "rollup -c && npm publish"
   }
 }
